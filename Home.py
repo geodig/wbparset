@@ -38,10 +38,10 @@ def add_logo():
 
 add_logo()
 
-st.write("# Welcome to WIBO-GINA interactive dashboard!")
+st.write("# Welcome to WBI Parset interactive dashboard!")
 st.markdown(
     """
-    Please use this web-app dashboard to generate geotechnical parameter set and plot cross section profiles.
+    Please use this web-app dashboard to visualize and generate geotechnical parameter set.
     """)
 
 col1, col2= st.columns(2)
@@ -68,8 +68,3 @@ if submit2:
     st.session_state['wb'] = wb
     st.session_state['utmz'] = utm_zone
     st.session_state['utmh'] = utm_hemi
-
-
-
-
-
