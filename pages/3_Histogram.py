@@ -115,18 +115,3 @@ recap = {
 
 df_rec = pd.DataFrame(recap)
 df_rec2 = st.experimental_data_editor(df_rec, use_container_width=True)
-
-import io
-
-buffer = io.BytesIO()
-
-with pd.ExcelWriter(buffer, engine='xlsxwriter') as writer:
-    df_rec2.to_excel(writer, sheet_name='Sheet1')
-    writer.save()
-
-    st.download_button(
-        label="Download XLSX",
-        data=buffer,
-        file_name="recap_parset.xlsx",
-        mime="application/vnd.ms-excel"
-    )
