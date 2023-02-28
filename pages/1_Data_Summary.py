@@ -72,6 +72,8 @@ for i in range(len(dflab)):
         elif sample_depth > strati_depth[j]:
             val.append(1)
     strati_index = np.sum(val)
+    if strati_index == strati_n:
+        strati_index = strati_n-1
     strati.append(strati_list[strati_index])
 
 dflab["Stratigraphy"] = strati
