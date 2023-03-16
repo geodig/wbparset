@@ -25,7 +25,7 @@ st.dataframe(dflab)
 st.markdown("# Correlation table")
 st.dataframe(dfcor)
 
-bh_list = dflab['Borehole'].unique().tolist()
+bh_list = dflab['Borehole [-]'].unique().tolist()
 
 if dfstrati.empty:
     pass
@@ -42,8 +42,8 @@ else:
     
     strati = []
     for i in range(len(dflab)):
-        head_index = head.index(dflab["Borehole"].iloc[i])
-        sample_depth = dflab["Depth"].iloc[i]
+        head_index = head.index(dflab["Borehole [-]"].iloc[i])
+        sample_depth = dflab["Depth [m]"].iloc[i]
         strati_depth, val = [],[]
         for j in range(strati_n):
             strati_depth.append(sh.cell(j+2,head_index+1).value)
@@ -56,23 +56,23 @@ else:
             strati_index = strati_n-1
         strati.append(strati_list[strati_index])
     
-    dflab["Stratigraphy"] = strati
-    dfcor["Stratigraphy"] = strati
+    dflab["Stratigraphy [-]"] = strati
+    dfcor["Stratigraphy [-]"] = strati
     
     st.markdown("# Grain size distribution bar chart")
     col1, col2 = st.columns(2)
     with col2:
         select = st.radio("Select a strati unit:", options=strati_list)
         
-    dflab2 = dflab[dflab["Stratigraphy"]==select]
+    dflab2 = dflab[dflab["Stratigraphy [-]"]==select]
     
     label = ["clay","silt","sand","gravel"]
     color = ["turquoise","lightcoral","gold","silver"]
     
     xdata, ydata = [],[]
     for i in range(0,len(dflab2)):
-        xdata.append([dflab2["Clay"].iloc[i],dflab2["Silt"].iloc[i],dflab2["Sand"].iloc[i],dflab2["Gravel"].iloc[i]])
-        ydata.append("%s, depth %.1f m"%(dflab2["Borehole"].iloc[i],dflab2["Depth"].iloc[i]))
+        xdata.append([dflab2["Clay [%]"].iloc[i],dflab2["Silt [%]"].iloc[i],dflab2["Sand [%]"].iloc[i],dflab2["Gravel [%]"].iloc[i]])
+        ydata.append("%s, depth %.1f m"%(dflab2["Borehole [-]"].iloc[i],dflab2["Depth [m]"].iloc[i]))
     
     fig = go.Figure()
     
