@@ -3,3 +3,4 @@ plotly
 folium
 utm
 streamlit_folium
+streamlit_extras
