@@ -40,8 +40,12 @@ with col1:
     col_cor = "A:K,AY:BZ"
     
 if submit:
-    dflab = pd.read_excel(file, sheet_name="labtest", usecols=col_lab, skiprows=[1], header=0)
-    dfcor = pd.read_excel(file, sheet_name="labtest", usecols=col_cor, skiprows=[1], header=0)
+    dflab = pd.read_excel(file, sheet_name="labtest", usecols=col_lab, header=None)
+    dflab.columns = dflab.loc[0:1].apply(' '.join)
+    dflab = dflab.loc[2:].reset_index(drop=True)
+    dfcor = pd.read_excel(file, sheet_name="labtest", usecols=col_cor, header=None)
+    dfcor.columns = dfcor.loc[0:1].apply(' '.join)
+    dfcor = dfcor.loc[2:].reset_index(drop=True)
     wb = openpyxl.load_workbook(file, data_only=True)
     dfstrati = pd.read_excel(file, sheet_name="stratigraphy")
     st.session_state['wb'] = wb
