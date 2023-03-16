@@ -37,7 +37,7 @@ with col1:
     strati = st.selectbox('Select stratigraphy:', options=strati_list, key="sb1")
     param = st.selectbox("Select parameters:", options=paramlist, key="sb2")
     nbin = st.slider("Number of bins:", min_value=5, max_value=30, key="sl1")
-    df = dflab[dflab["Stratigraphy"]==strati]
+    df = dflab[dflab["Stratigraphy [-]"]==strati]
     fig = px.histogram(df, x=param, nbins=nbin, height = 400, width = 400)
     col1a,col1b = col1.columns(2)
     with col1a:
@@ -50,7 +50,8 @@ with col1:
         perc = df[param].quantile(0.05)
         output = {
             "Mean":[np.average(value)],
-            "5% percentile":[perc]}
+            "5% percentile":[perc],
+            "# samples":[len(value)]}
         df_output = pd.DataFrame(output)
         st.write(df_output)
         
@@ -62,7 +63,7 @@ with col2:
     strati = st.selectbox('Select stratigraphy:', options=strati_list, key="sb3")
     param = st.selectbox("Select parameters:", options=paramlist, key="sb4")
     nbin = st.slider("Number of bins:", min_value=5, max_value=30, key="sl2")
-    df = dfcor[dfcor["Stratigraphy"]==strati]
+    df = dfcor[dfcor["Stratigraphy [-]"]==strati]
     fig = px.histogram(df, x=param, nbins=nbin, height = 400, width = 400)
     col2a,col2b = col2.columns(2)
     with col2a:
@@ -75,23 +76,27 @@ with col2:
         perc = df[param].quantile(0.05)
         output = {
             "Mean":[np.average(value)],
-            "5% percentile":[perc]}
+            "5% percentile":[perc],
+            "# samples":[len(value)]}
         df_output = pd.DataFrame(output)
         st.write(df_output)
 
 if dfstrati.empty:
     pass
 else:
+    strati_list2 = strati_list.insert(0,"parameter unit")
     recap = {
         "Stratigraphy":strati_list,
-        "gamma_sat":[0.00]*strati_n,
-        "CR":[0.00]*strati_n,
-        "RR":[0.00]*strati_n,
-        "Ca":[0.00]*strati_n,
-        "cv":[0.00]*strati_n,
-        "c'":[0.00]*strati_n,
-        "phi'":[0.00]*strati_n,
-        "cu":[0.00]*strati_n
+        "gamma_sat":[None]*(strati_n+1),
+        "CR":[None]*(strati_n+1),
+        "RR":[None]*(strati_n+1),
+        "Ca":[None]*(strati_n+1),
+        "cv":[None]*(strati_n+1),
+        "POP":[None]*(strati_n+1),
+        "OCR":[None]*(strati_n+1),
+        "c'":[None]*(strati_n+1),
+        "phi'":[None]*(strati_n+1),
+        "cu":[None]*(strati_n+1)
         }
     
     df_rec = pd.DataFrame(recap)
