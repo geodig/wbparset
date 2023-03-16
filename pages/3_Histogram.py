@@ -8,39 +8,18 @@ import streamlit as st
 import plotly.express as px
 import numpy as np
 import pandas as pd
+from streamlit_extras.app_logo import add_logo
 
-st.set_page_config(page_title="WBI Parset"
+st.set_page_config(page_title="wibopargen"
                     ,layout="wide"
                    )
 
-def add_logo():
-    st.markdown(
-        """
-        <style>
-            [data-testid="stSidebarNav"] {
-                background-image: url(https://climateapp.nl/img/about/logo-witteveenbos.png);
-                background-repeat: no-repeat;
-                padding-top: 10px;
-                background-position: 20px 20px;
-            }
-            [data-testid="stSidebarNav"]::before {
-                content: "";
-                margin-left: 20px;
-                margin-top: 20px;
-                font-size: 30px;
-                position: relative;
-                top: 100px;
-            }
-        </style>
-        """,
-        unsafe_allow_html=True,
-    )
-
-add_logo()
+add_logo("https://climateapp.nl/img/about/logo-witteveenbos.png")
 
 
 dflab = st.session_state['dflab']
 dfcor = st.session_state['dfcor']
+dfstrati = st.session_state["dfstrati"] 
 wb = st.session_state['wb']
 sh = wb["stratigraphy"]
 strati_n = sh.max_row - 1
@@ -100,18 +79,34 @@ with col2:
         df_output = pd.DataFrame(output)
         st.write(df_output)
 
-recap = {
-    "Stratigraphy":strati_list,
-    "gamma_sat":[0.00]*strati_n,
-    "CR":[0.00]*strati_n,
-    "RR":[0.00]*strati_n,
-    "Ca":[0.00]*strati_n,
-    "cv":[0.00]*strati_n,
-    "c'":[0.00]*strati_n,
-    "phi'":[0.00]*strati_n,
-    "cu":[0.00]*strati_n
-    }
-
-
-df_rec = pd.DataFrame(recap)
-df_rec2 = st.experimental_data_editor(df_rec, use_container_width=True)
+if dfstrati.empty:
+    pass
+else:
+    recap = {
+        "Stratigraphy":strati_list,
+        "gamma_sat":[0.00]*strati_n,
+        "CR":[0.00]*strati_n,
+        "RR":[0.00]*strati_n,
+        "Ca":[0.00]*strati_n,
+        "cv":[0.00]*strati_n,
+        "c'":[0.00]*strati_n,
+        "phi'":[0.00]*strati_n,
+        "cu":[0.00]*strati_n
+        }
+    
+    df_rec = pd.DataFrame(recap)
+    df_rec2 = st.experimental_data_editor(df_rec, use_container_width=True)
+    
+    @st.cache_data
+    def convert_df(df):
+        # IMPORTANT: Cache the conversion to prevent computation on every rerun
+        return df.to_csv().encode('utf-8')
+    
+    csv = convert_df(df_rec2)
+    
+    st.download_button(
+        label="Download CSV",
+        data=csv,
+        file_name='parset.csv',
+        mime='text/csv',
+    )
