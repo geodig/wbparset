@@ -76,7 +76,8 @@ with col2:
             BH_Y.append(sheet_bhmgr.cell(i+2,4).value)
             BH_Z.append(sheet_bhmgr.cell(i+2,5).value)
             BH_GWL.append(sheet_bhmgr.cell(i+2,6).value)
-            BH_cat.append("BH")
+            if BH_ID[i] != None:
+              BH_cat.append("BH")
     
         BH_X = np.array(BH_X)
         BH_Y = np.array(BH_Y)
@@ -93,7 +94,8 @@ with col2:
             CPT_Y.append(sheet_cptmgr.cell(i+2,4).value)
             CPT_Z.append(sheet_cptmgr.cell(i+2,5).value)
             CPT_GWL.append(sheet_cptmgr.cell(i+2,6).value) 
-            CPT_cat.append("CPT")
+            if CPT_ID[i] != None:
+              CPT_cat.append("CPT")
     
         CPT_X = np.array(CPT_X)
         CPT_Y = np.array(CPT_Y)
